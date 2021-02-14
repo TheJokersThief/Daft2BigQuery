@@ -1,7 +1,7 @@
-.PHONY: test coverage lint docs clean dev install help export_conf
+.PHONY: test coverage lint docs clean dev install help export_conf create_pubsub_topic deploy_to_gfunctions
 
-project_name="daft2bigquery"
-project_id=""
+PROJECT_NAME = daft2bigquery
+PROJECT_ID ?= example-project
 
 help: ## Show help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -39,10 +39,12 @@ export_conf:  ## Export the poetry lockfile to requirements.txt
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 create_pubsub_topic:
-	gcloud pubsub topics create "trigger-${project_name}"
+ifeq ($(shell gcloud --project=iamevan-me pubsub topics list --filter="name~trigger-daft2bigquery" | wc -l), 0)
+	gcloud --project=${PROJECT_ID} pubsub topics create "trigger-${PROJECT_NAME}"
+endif
 
-deploy_to_gfunctions: create_pubsub_topic
-	gcloud functions deploy ${project_name} --region europe-west1 --project $project_id --runtime python38 --memory 256MB --entry-point execute_daft2bigquery --trigger-topic "trigger-${project_name}" --timeout 600s --max-instances 1 --retry
+deploy_to_gfunctions: create_pubsub_topic export_conf
+	gcloud functions deploy ${PROJECT_NAME} --region europe-west1 --project ${PROJECT_ID} --runtime python38 --memory 256MB --entry-point execute_daft2bigquery --trigger-topic "trigger-${PROJECT_NAME}" --timeout 540s --max-instances 1 --retry
 
 publish: deploy_to_gfunctions  ## Publish project to google cloud functions
 	@echo "Published"
