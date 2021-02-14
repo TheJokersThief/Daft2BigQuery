@@ -1,17 +1,16 @@
 [tool.poetry]
-name = "linkace-cli"
+name = "daft2bigquery"
 version = "1.0.0"
-description = "A CLI for the LinkAce API"
+description = "Scrapes daft and puts the data in bigquery"
 authors = ["Evan Smith <me@iamevan.me>"]
 license = "MIT"
 readme = "README.md"
 
-[tool.poetry.scripts]
-linkace = 'linkace_cli:main'
-
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "=3.8"
 rich = "^9.5.1"
+daft-scraper = "^1.2.7"
+google-cloud-bigquery = "^2.8.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
