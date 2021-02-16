@@ -16,10 +16,10 @@ class DaftResults():
         self.daft = DaftSearch(self.search_type)
 
     def get_listings_as_rows(self):
+        results = self.daft.search(self.options, max_pages=self.max_pages)
         return [
             DaftListing(listing).data
-            for listing in 
-            self.daft.search(self.options, max_pages=self.max_pages)
+            for listing in results
         ]
 
 
@@ -49,13 +49,22 @@ class DaftListing(object):
         'point.coordinates.0', # longitude
         'point.coordinates.1', # latitude
     ]
-    data = {}
+    data = None
     def __init__(self, listing: Listing):
+        self.data = {}
         for field in self.FIELDS:
             first_level, *further_levels = field.split('.')
-            value = getattr(listing, first_level)
+            value = getattr(listing, first_level, "")
             for level in further_levels:
                 if level.isdigit():
                     level = int(level)
-                value = value[level]
+                try:
+                    value = value[level]
+                except Exception:
+                    value = ""
+                    break
+
+            if "Date" in field:
+                # Divide by 1000 because timestamp is in milliseconds
+                value = int(value) / 1000
             self.data[field.replace('.', '_')] = value
