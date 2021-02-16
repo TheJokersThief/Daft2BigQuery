@@ -14,4 +14,5 @@ class BigQuery():
             print("New rows have been added.")
         else:
             print("Encountered errors while inserting rows: {}".format(errors))
+            raise Exception(errors)
         
