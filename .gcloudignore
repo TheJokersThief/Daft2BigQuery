@@ -15,4 +15,8 @@
 
 node_modules
 .venv
-#!include:.gitignore
+.vscode
+deploy
+poetry.lock
+
+!include:requirements.txt
