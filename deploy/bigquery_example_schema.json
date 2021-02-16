@@ -42,7 +42,7 @@
     },
     {
         "name": "publishDate",
-        "type": "DATETIME",
+        "type": "TIMESTAMP",
         "mode": "NULLABLE"
     },
     {
