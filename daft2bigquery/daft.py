@@ -80,8 +80,6 @@ class DaftListing(object):
             # If any of the fields is empty, we don't want the entry. This happens
             # mostly with prices for paid sponsor ads
             if value in ["", None]:
-                print("NO VALUE, removing", field, value)
-                print(listing)
                 self.data = None
                 break
 
