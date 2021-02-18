@@ -1,3 +1,4 @@
+import time
 from daft_scraper.listing import Listing
 from daft_scraper.search import DaftSearch, SearchType
 from daft_scraper.search.options_location import LocationsOption, Location
@@ -51,10 +52,17 @@ class DaftListing(object):
         'point.coordinates.1': float, # latitude
     }
     data = None
+
     def __init__(self, listing: Listing):
-        self.data = {}
+        self.data = {
+            'entryDate': int(time.time())
+        }
         for field, dtype in self.FIELDS.items():
             first_level, *further_levels = field.split('.')
+            
+            default = str()
+            if dtype:
+                default = dtype()
             value = getattr(listing, first_level, "")
             for level in further_levels:
                 if level.isdigit():
@@ -69,6 +77,17 @@ class DaftListing(object):
                 # Divide by 1000 because timestamp is in milliseconds
                 value = int(value) / 1000
 
+            # If any of the fields is empty, we don't want the entry. This happens
+            # mostly with prices for paid sponsor ads
+            if value in ["", None]:
+                print("NO VALUE, removing", field, value)
+                print(listing)
+                self.data = None
+                break
+
             if dtype:
+                # This ensures that things like the price are stored as float even
+                # if they're parsed as integers
                 value = dtype(value)
             self.data[field.replace('.', '_')] = value
+    
