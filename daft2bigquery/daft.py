@@ -27,26 +27,26 @@ class DaftResults():
 class DaftListing(object):
     FIELDS = {
         'id': None,
-        'title': str,
+        'title': None,
         'price': float,
-        'url': str,
-        'sections.0': str,
-        'sections.1': str,
-        'sections.2': str,
-        'featuredLevel': str,
+        'url': None,
+        'sections.0': None,
+        'sections.1': None,
+        'sections.2': None,
+        'featuredLevel': None,
         'publishDate': None,
-        'category': str,
-        'numBedrooms': int,
-        'numBathrooms': int,
-        'propertyType': str,
-        'media.totalImages': int,
-        'media.hasBrochure': str,
-        'media.hasVirtualTour': str,
-        'ber.rating': str,
-        'description': str,
-        'county.0': str,
-        'area.0': str,
-        'views': int,
+        'category': None,
+        'numBedrooms': None,
+        'numBathrooms': None,
+        'propertyType': None,
+        'media.totalImages': None,
+        'media.hasBrochure': None,
+        'media.hasVirtualTour': None,
+        'ber.rating': None,
+        'description': None,
+        'county.0': None,
+        'area.0': None,
+        'views': None,
         'point.coordinates.0': float, # longitude
         'point.coordinates.1': float, # latitude
     }
@@ -70,5 +70,6 @@ class DaftListing(object):
                 value = int(value) / 1000
 
             if dtype:
-                value = dtype(field)
+                print(field, value)
+                value = dtype(value)
             self.data[field.replace('.', '_')] = value
