@@ -70,6 +70,5 @@ class DaftListing(object):
                 value = int(value) / 1000
 
             if dtype:
-                print(field, value)
                 value = dtype(value)
             self.data[field.replace('.', '_')] = value
