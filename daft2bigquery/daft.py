@@ -24,35 +24,35 @@ class DaftResults():
 
 
 class DaftListing(object):
-    FIELDS = [
-        'id',
-        'title',
-        'price',
-        'url',
-        'sections.0',
-        'sections.1',
-        'sections.2',
-        'featuredLevel',
-        'publishDate',
-        'category',
-        'numBedrooms',
-        'numBathrooms',
-        'propertyType',
-        'media.totalImages',
-        'media.hasBrochure',
-        'media.hasVirtualTour',
-        'ber.rating',
-        'description',
-        'county.0',
-        'area.0',
-        'views',
-        'point.coordinates.0', # longitude
-        'point.coordinates.1', # latitude
-    ]
+    FIELDS = {
+        'id': None,
+        'title': str,
+        'price': float,
+        'url': str,
+        'sections.0': str,
+        'sections.1': str,
+        'sections.2': str,
+        'featuredLevel': str,
+        'publishDate': None,
+        'category': str,
+        'numBedrooms': int,
+        'numBathrooms': int,
+        'propertyType': str,
+        'media.totalImages': int,
+        'media.hasBrochure': str,
+        'media.hasVirtualTour': str,
+        'ber.rating': str,
+        'description': str,
+        'county.0': str,
+        'area.0': str,
+        'views': int,
+        'point.coordinates.0': float, # longitude
+        'point.coordinates.1': float, # latitude
+    }
     data = None
     def __init__(self, listing: Listing):
         self.data = {}
-        for field in self.FIELDS:
+        for field, dtype in self.FIELDS.items():
             first_level, *further_levels = field.split('.')
             value = getattr(listing, first_level, "")
             for level in further_levels:
@@ -67,4 +67,7 @@ class DaftListing(object):
             if "Date" in field:
                 # Divide by 1000 because timestamp is in milliseconds
                 value = int(value) / 1000
+
+            if dtype:
+                value = dtype(field)
             self.data[field.replace('.', '_')] = value
