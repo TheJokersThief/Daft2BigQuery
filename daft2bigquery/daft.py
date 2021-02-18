@@ -5,6 +5,7 @@ from daft_scraper.search.options_location import LocationsOption, Location
 
 class DaftResults():
     def __init__(self, event):
+        print("EVENT: ", event)
         self.options = [
             LocationsOption([
                 Location(loc)
