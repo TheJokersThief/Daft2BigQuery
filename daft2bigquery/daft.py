@@ -82,7 +82,7 @@ class DaftListing(object):
                 value = int(value) / 1000
 
             # If any of the fields is empty, we don't want the entry. This happens
-            # mostly with prices for paid sponsor ads
+            # mostly with prices/numBathrooms for paid sponsor ads
             if value in ["", None]:
                 self.data = None
                 break
