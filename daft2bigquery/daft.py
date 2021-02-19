@@ -8,6 +8,8 @@ from daft_scraper.search.options_location import LocationsOption, Location
 class DaftResults():
     def __init__(self, event):
         print("EVENT: ", event)
+
+        self.page_offset = event.get('page_offset', 0)
         self.options = [
             LocationsOption([
                 Location(loc)
@@ -22,7 +24,8 @@ class DaftResults():
         self.daft = DaftSearch(self.search_type)
 
     def get_listings_as_rows(self):
-        results = self.daft.search(self.options, max_pages=self.max_pages)
+        results = self.daft.search(
+            self.options, max_pages=self.max_pages, page_offset=self.page_offset)
         return [
             DaftListing(listing).data
             for listing in results
