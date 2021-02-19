@@ -2,7 +2,7 @@
 
 Imports daft data to a bigquery table in an idempotent fashion.
 
-![](deploy/diagram.jpg)
+![](images/diagram.jpg)
 
 
 - [Daft2BigQuery](#daft2bigquery)
@@ -87,3 +87,6 @@ WHERE entryDate IN (
     GROUP BY id
 )
 ```
+
+![](images/dashboard_1.png)
+![](images/dashboard_2.png)
