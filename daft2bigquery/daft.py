@@ -1,6 +1,7 @@
 import time
 from daft_scraper.listing import Listing
 from daft_scraper.search import DaftSearch, SearchType
+from daft_scraper.search.options import SortOption, Sort
 from daft_scraper.search.options_location import LocationsOption, Location
 
 
@@ -13,6 +14,9 @@ class DaftResults():
                 for loc in event['locations']
             ])
         ]
+
+        # Always sort by most recent
+        self.options.append(SortOption(Sort.MOST_RECENT))
         self.search_type = SearchType(event['search_type'])
         self.max_pages = event['max_pages']
         self.daft = DaftSearch(self.search_type)
