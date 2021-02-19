@@ -9,6 +9,7 @@ Imports daft data to a bigquery table in an idempotent fashion.
 - [Setting up a bigquery table](#setting-up-a-bigquery-table)
 - [Deploying the cloud function](#deploying-the-cloud-function)
 - [Sending your first payload](#sending-your-first-payload)
+  - [Publish pubub messages](#publish-pubub-messages)
 - [Setting up a scheduled run](#setting-up-a-scheduled-run)
 - [Data Studio](#data-studio)
 
@@ -55,6 +56,17 @@ Published
 # Sending your first payload
 
 After deployment, you can visit the function in the console and go to the `Testing` tab. There's an example of a payload in [deploy/pubsub_payload.json](deploy/pubsub_payload.json) and [example_pubsub_payload.json](example_pubsub_payload.json).
+
+## Publish pubub messages
+
+There's a makefile command `add_job` that will add the contents of [deploy/pubsub_payload.json](deploy/pubsub_payload.json) to the pubsub queue which will trigger the cloud function.
+
+```
+$ PROJECT_ID=<redacted> make add_job
+gcloud pubsub topics publish "projects/<redacted>/topics/trigger-daft2bigquery" --message='{     "bq_table_id": "daft_housing_data.sales_data",     "locations": ["ireland"],     "search_type": "property-for-sale",     "max_pages": 25,     "page_offset": 26 }'
+messageIds:
+- '2027916082568790'
+```
 
 # Setting up a scheduled run
 

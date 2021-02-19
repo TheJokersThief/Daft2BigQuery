@@ -2,5 +2,6 @@
     "bq_table_id": "example-id",
     "locations": ["example-location"],
     "search_type": "one of the options from daft_scraper.search.SearchType (e.g. property-for-sale)",
-    "max_pages": 10
+    "max_pages": 10,
+    "page_offset": 0
 }

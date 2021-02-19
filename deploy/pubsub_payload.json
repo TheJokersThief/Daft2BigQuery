@@ -2,5 +2,6 @@
     "bq_table_id": "daft_housing_data.renting_data",
     "locations": ["ireland"],
     "search_type": "property-for-rent",
-    "max_pages": 10
+    "max_pages": 10,
+    "page_offset": 0
 }

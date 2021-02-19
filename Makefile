@@ -39,7 +39,7 @@ export_conf:  ## Export the poetry lockfile to requirements.txt
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
 create_pubsub_topic:
-ifeq ($(shell gcloud --project=iamevan-me pubsub topics list --filter="name~trigger-daft2bigquery" | wc -l), 0)
+ifeq ($(shell gcloud --project=iamevan-me pubsub topics list --filter="name~trigger-${PROJECT_NAME}" | wc -l), 0)
 	gcloud --project=${PROJECT_ID} pubsub topics create "trigger-${PROJECT_NAME}"
 endif
 
@@ -48,3 +48,6 @@ deploy_to_gfunctions: create_pubsub_topic export_conf
 
 publish: deploy_to_gfunctions  ## Publish project to google cloud functions
 	@echo "Published"
+
+add_job:  ## Adds a message to the pubsub topic, using the content in deploy/pubsub_payload.json
+	gcloud pubsub topics publish "projects/${PROJECT_ID}/topics/trigger-${PROJECT_NAME}" --message='$(shell cat deploy/pubsub_payload.json)'
